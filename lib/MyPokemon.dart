@@ -1,67 +1,101 @@
 import 'package:flutter/material.dart';
-import 'package:pokemon_app/Pokemon.dart';
-import 'package:pokemon_app/Service.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:pokemon_app/PokeView.dart';
 
-import 'MyColors.dart';
 
-class MyPokemon extends StatefulWidget{
-  @override
-  State<StatefulWidget> createState()=>_MyPokemon();
-}
-
-class _MyPokemon extends State<MyPokemon>{
+class MyPokemon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Widget albumView(double maxHeight,double maxWidth){
-      return new Container(
-          color: MyColors.c2,
-          height: maxHeight,
-          child: Padding(padding: EdgeInsets.fromLTRB(0, 30, 0, 0),child:
-          Column(children: <Widget>[
-            SizedBox(height: 16,),
-            SizedBox(height: 32,child: Text("Here is your 10 pokemons",style: TextStyle(fontSize: 30),),),
-            SizedBox(height:maxHeight/1.3, child:
-            CustomScrollView(
-              primary: false,
-              slivers: <Widget>[
-                SliverPadding(
-                  padding: const EdgeInsets.all(20),
-                  sliver: SliverGrid.count(
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    crossAxisCount: 2,
-                    children: <Widget>[
-                      FutureBuilder<Pokemon>(
-                        future: getPokemon(),
-                        builder: (context,x){
-                          return
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              child:  Text('${x.data.name}'),
-                              color: Colors.green[600],
-                            );
-                        },
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            )
-            ),
+    final HttpLink httpLink =
+    HttpLink(uri: 'https://graphql-pokemon.now.sh');
 
-          ],),)
-      );
-    }
-
-    double maxHeight=MediaQuery.of(context).size.height;
-    double maxWidth=MediaQuery.of(context).size.width;
+    final ValueNotifier<GraphQLClient> client = ValueNotifier<GraphQLClient>(
+      GraphQLClient(
+        link: httpLink as Link,
+        cache: OptimisticCache(
+          dataIdFromObject: typenameDataIdFromObject,
+        ),
+      ),
+    );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-          body:albumView(maxHeight, maxWidth),
+      home: GraphQLProvider(
+        child: HomePage(),
+        client: client,
       ),
+    );
+  }
+}
 
+class HomePage extends StatelessWidget {
+
+  final String query = r'''
+                    query getPoks{
+  pokemons(first: 10) {
+    name
+    height{minimum,maximum}
+    weight{minimum,maximum}
+    maxHP
+    image
+    attacks{
+      fast{
+        name
+        damage
+      }
+      special{
+        name
+        damage
+      }
+    }
+  }
+}
+
+                  ''';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("GraphlQL Client"),
+        ),
+        body: Query(
+          options: QueryOptions(
+              document: query),
+          builder: (QueryResult result, {VoidCallback refetch}) {
+            if (result.loading) {
+              return Center(child: CircularProgressIndicator());
+            }
+
+            if (result.data == null) {
+              return Center(child: Text('Pokemons are hidding in the bush.'));
+            }
+
+            return _pokeList(result);
+          },
+        ));
+  }
+
+  Container _pokeList(QueryResult result) {
+    final pokeList=result.data['pokemons'];
+    return Container(
+      color: Colors.white,
+      child: ListView.separated(
+        itemCount: pokeList.length,
+        itemBuilder: (context, index) {
+          return Container(color: Colors.white,
+            child: ListTile(
+                title: Text(pokeList[index]['name'],textAlign: TextAlign.center,),
+                subtitle: Text('maxHP: ${pokeList[index]['maxHP']}',textAlign: TextAlign.center,),
+                leading: Image.network(pokeList[index]['image']),
+                onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>PokeView(pokeList[index])))
+            ),
+          );},
+        separatorBuilder: (context, index) {
+          return Divider(color: Colors.lightBlueAccent,);
+        },
+      ),
     );
   }
 
 }
+
