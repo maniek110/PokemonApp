@@ -56,7 +56,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Poke List"),
+          title: Center(child: Text("Poke List")),
         ),
         body: Query(
           options: QueryOptions(
