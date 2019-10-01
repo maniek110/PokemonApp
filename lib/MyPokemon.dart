@@ -56,7 +56,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("GraphlQL Client"),
+          title: Text("Poke List"),
         ),
         body: Query(
           options: QueryOptions(
@@ -79,10 +79,10 @@ class HomePage extends StatelessWidget {
     final pokeList=result.data['pokemons'];
     return Container(
       color: Colors.white,
-      child: ListView.separated(
+      child: ListView.builder(
         itemCount: pokeList.length,
-        itemBuilder: (context, index) {
-          return Container(color: Colors.white,
+        itemBuilder: (BuildContext context,int index) {
+          return new Container(color: Colors.white,
             child: ListTile(
                 title: Text(pokeList[index]['name'],textAlign: TextAlign.center,),
                 subtitle: Text('maxHP: ${pokeList[index]['maxHP']}',textAlign: TextAlign.center,),
@@ -90,9 +90,7 @@ class HomePage extends StatelessWidget {
                 onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>PokeView(pokeList[index])))
             ),
           );},
-        separatorBuilder: (context, index) {
-          return Divider(color: Colors.lightBlueAccent,);
-        },
+
       ),
     );
   }

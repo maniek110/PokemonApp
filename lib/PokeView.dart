@@ -42,37 +42,32 @@ class PokeView extends StatelessWidget{
                 ],),
                 SizedBox(height: 16,),
 
-                Text('Typical Attacks',textScaleFactor: 2,),
+                Text('Attacks',textScaleFactor: 2,),
                 SizedBox(height: 16,),
-                Column(mainAxisAlignment:MainAxisAlignment.spaceBetween,children: <Widget>[
-                  Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,children: <Widget>[
-                  Column(children: <Widget>[
-                    Text(pokemon['attacks']['fast'][0]['name'],textScaleFactor: 1.75,),
-                    Text("Damage: ${pokemon['attacks']['fast'][0]['name']}" ),
-                  ],),
-                  Column(children: <Widget>[
-                    Text(pokemon['attacks']['fast'][1]['name'],textScaleFactor: 1.75,),
-                    Text("Damage: ${pokemon['attacks']['fast'][1]['name']}" ),
-                  ],)
+                SizedBox(width: 400,height: 300,child:
+                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: <Widget>[
+                  Expanded(flex: 1,child:ListView.builder(
+                      itemCount: pokemon['attacks']['fast'].length,
+                      itemBuilder: (BuildContext context,int i){
+                        return ListTile(
+                          title: Text(pokemon['attacks']['fast'][i]['name'],textScaleFactor: 1.5,),
+                          subtitle: Text("Damage: ${pokemon['attacks']['fast'][i]['name']}" ),
+                        );
+                      }),),
+                  Expanded(flex:1,child:ListView.builder(
+                      itemCount: pokemon['attacks']['special'].length,
+                      itemBuilder: (BuildContext context,int i){
+                        return ListTile(
+                          title: Text(pokemon['attacks']['special'][i]['name'],textScaleFactor: 1.5,),
+                          subtitle: Text("Damage: ${pokemon['attacks']['special'][i]['name']}" ),
+                        );
+                      }),)
+                ],)
 
-                  ],),
-                  Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,children: <Widget>[
-                    Column(children: <Widget>[
-                      Text(pokemon['attacks']['special'][0]['name'],textScaleFactor: 1.75,),
-                      Text("Damage: ${pokemon['attacks']['special'][0]['name']}" ),
-                    ],),
-                    Column(children: <Widget>[
-                      Text(pokemon['attacks']['special'][1]['name'],textScaleFactor: 1.75,),
-                      Text("Damage: ${pokemon['attacks']['special'][1]['name']}" ),
-                    ],)
-
-                  ],),
-                ],),
-                ],),
-
-              )
+                  ,)
+              ])
               ,),
 
-    );
+    ));
   }
 }
