@@ -1,16 +1,18 @@
 # pokemon_app
-
-A new Flutter project.
-
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project is my interview task.
 
-A few resources to get you started if this is your first Flutter project:
+In order to run the project:
+1. [Download flutter(tap to open Flutter Dev)](https://flutter.dev).
+2. Download the project.
+3. Follow the instructions provided on the page in order to set up flutter. 
+4. Open flutter console and go to project folder.
+5. Connect your phone to the PC with debug mode enabled or set up emulator using command "flutter emulators --create [--name xyz]" and then "flutter emulators --launch 'emualtor_name'".
+6. type "flutter run" in order to run the app. 
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Thanks!
 
-For help getting started with Flutter, view our
+For help getting started with Flutter, view 
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.

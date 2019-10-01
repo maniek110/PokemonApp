@@ -79,7 +79,7 @@ class HomePage extends StatelessWidget {
     final pokeList=result.data['pokemons'];
     return Container(
       color: Colors.white,
-      child: ListView.builder(
+      child: ListView.separated(
         itemCount: pokeList.length,
         itemBuilder: (BuildContext context,int index) {
           return new Container(color: Colors.white,
@@ -90,7 +90,9 @@ class HomePage extends StatelessWidget {
                 onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>PokeView(pokeList[index])))
             ),
           );},
-
+        separatorBuilder: (context, index) {
+          return Divider(color: Colors.lightBlueAccent,);
+        },
       ),
     );
   }
