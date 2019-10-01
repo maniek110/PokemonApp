@@ -9,7 +9,7 @@ In order to run the project:
 3. Follow the instructions provided on the page in order to set up flutter. 
 4. Open flutter console and go to project folder.
 5. Connect your phone to the PC with debug mode enabled or set up emulator using command "flutter emulators --create [--name xyz]" and then "flutter emulators --launch 'emualtor_name'".
-6. type "flutter run" in order to run the app. 
+6. Type "flutter run" in order to run the app. 
 
 Thanks!
 
