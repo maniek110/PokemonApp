@@ -56,7 +56,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("GraphlQL Client"),
+          title: Text("List of Pokemons"),
         ),
         body: Query(
           options: QueryOptions(
